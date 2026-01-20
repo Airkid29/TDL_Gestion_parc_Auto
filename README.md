@@ -1,107 +1,134 @@
-# TDL - Système de Gestion de parc Automobile
+# TDL - Réservation de Véhicules
 
-Application web moderne permettant la gestion et la réservation de véhicules d'entreprise. Conçue pour simplifier les déplacements professionnels grâce à une interface intuitive et un système de réservation robuste.
+Application web permettant la gestion et la réservation de véhicules d’entreprise.
+Ce projet a été réalisé dans le cadre d’un test pratique de recrutement afin de démontrer la capacité à concevoir une application web fonctionnelle, structurée et respectant des règles métier essentielles.
 
+## Contexte de l’application
 
-# Contexte de l'application
-Dans un environnement professionnel dynamique, la mobilité des collaborateurs est essentielle. Ce projet répond au besoin de centraliser et d'automatiser la gestion du parc automobile de l'entreprise.
+Dans un environnement professionnel, la gestion des déplacements nécessite une organisation rigoureuse afin d’éviter les conflits d’utilisation des ressources.
+Cette application vise à centraliser et automatiser la gestion du parc automobile de l’entreprise.
 
-**Objectifs principaux :**
-- Remplacer les processus manuels (Excel, emails) par une solution digitale.
-- Éviter les conflits de réservation grâce à des règles métier strictes.
-- Offrir une visibilité en temps réel sur la disponibilité des véhicules.
-- Fournir un outil d'administration pour gérer la flotte (ajout, modification, suppression).
+### Objectifs principaux
 
----
+*   Remplacer les processus manuels (Excel, emails) par une solution web.
+*   Éviter les conflits de réservation grâce à des règles métier strictes.
+*   Offrir une visibilité claire sur la disponibilité des véhicules.
+*   Fournir un espace administrateur pour la gestion du parc automobile.
 
-## Choix Techniques
+## Choix techniques
 
-Le projet repose sur une architecture **MVC (Modèle-Vue-Contrôleur)** sans framework lourd, garantissant performance et maîtrise du code.
+Le projet repose sur une architecture **MVC (Modèle – Vue – Contrôleur)** sans framework, afin de garantir une bonne lisibilité du code et une maîtrise complète de la logique applicative.
 
 ### Backend
-- **Langage** : PHP 7.4 ou plus (Natif)
-- **Base de données** : MySQL
-- **Accès aux données** : PDO (PHP Data Objects) pour une sécurité accrue contre les injections SQL.
-- **Architecture** : MVC pur pour séparer la logique métier, l'accès aux données et l'affichage.
+
+*   **Langage** : PHP 7.4+ (natif)
+*   **Base de données** : MySQL
+*   **Accès aux données** : PDO (protection contre les injections SQL)
+*   **Architecture** : MVC simplifié
 
 ### Frontend
-- **Structure** : HTML5
-- **Styles** : 
-  - **Bootstrap 5** pour la grille et les composants réactifs.
-  - **CSS Custom** (`assets/css/styles.css`)
-- **Police** : 'Inter' via Google Fonts
-- **Icônes** : Font Awesome
 
-### Fonctionnalités Spécifiques
-- **Upload d'images** : Gestion native des fichiers pour illustrer le catalogue de véhicules.
+*   HTML5
+*   Bootstrap 5 pour le responsive et les composants UI
+*   CSS personnalisé
+*   Font Awesome pour les icônes
+*   Google Fonts (Inter)
 
-## Principales Fonctionnalités
+### Fonctionnalités spécifiques
+
+*   Upload d’images pour les véhicules
+*   Gestion des sessions pour l’authentification
+
+## Fonctionnalités principales
 
 ### Espace Utilisateur
-- **Catalogue Visuel** : Consultation des véhicules avec photos, modèles et immatriculations.
-- **Recherche** : Filtrage des véhicules par marque ou modèle.
-- **Réservation Facile** : Formulaire simple avec sélection de dates.
-- **Mes Réservations** : Suivi des réservations passées, en cours et à venir, avec classification par statut couleur.
-- **Profil** : Gestion des informations personnelles.
+
+*   Consultation du catalogue des véhicules (photos, modèles, immatriculations)
+*   Recherche par marque ou modèle
+*   Réservation d’un véhicule sur une période donnée
+*   Consultation de ses réservations (passées, en cours, à venir)
+*   Gestion du profil utilisateur
 
 ### Espace Administrateur
-- **Gestion du Parc** : 
-  - Ajout de nouveaux véhicules avec **upload de photos**.
-  - Modification et suppression de véhicules existants.
-- **Vue d'ensemble** : Tableau de bord avec statistiques clés (nombre d'utilisateurs, réservations actives).
-- **Contrôle des Réservations** : Liste complète de toutes les réservations de l'entreprise.
 
-### Règles Métier
-- **Anti-Conflit** : Une vérification stricte empêche la réservation d'un véhicule déjà réservé sur la période demandée.
-- **Intégrité** : Suppression en cascade des réservations si un véhicule ou un utilisateur est supprimé.
+*   Ajout, modification et suppression des véhicules
+*   Upload d’images des véhicules
+*   Visualisation de toutes les réservations
+*   Tableau de bord avec statistiques globales
+
+## Règles métier implémentées
+
+### Prévention des conflits de réservation
+
+Avant la création d’une réservation, le système vérifie qu’aucune réservation existante pour le même véhicule ne chevauche la période demandée.
+
+Une réservation est refusée si la condition suivante est vraie :
+
+```
+nouvelle_date_debut < date_fin_existante
+ET
+nouvelle_date_fin > date_debut_existante
+```
+
+Cette logique garantit l’intégrité des réservations et empêche toute double réservation.
+
+### Intégrité des données
+
+Suppression en cascade des réservations associées à un utilisateur ou un véhicule supprimé.
+
+## Instructions de lancement
+
+### Prérequis
+
+*   Serveur local (XAMPP, WAMP, MAMP ou serveur PHP)
+*   PHP 7.4 ou supérieur
+*   MySQL
+
+### Installation
+
+1.  Cloner ou copier le projet dans le dossier `htdocs` (XAMPP) ou équivalent.
+
+### Base de données
+
+1.  Créer une base nommée `vehicle_reservation`
+2.  Importer le fichier `sql/setup.sql`
+
+### Configuration
+
+Modifier le fichier `app/config/database.php` si nécessaire :
+
+```php
+$host = 'localhost';
+$dbname = 'vehicle_reservation';
+$username = 'root';
+$password = '';
+```
+
+### Lancement
+
+```bash
+php -S localhost:8000 -t public
+```
+
+Accès : [http://localhost:8000](http://localhost:8000)
+
+## Comptes de test
+
+**Administrateur**
+*   Email : `admin@example.com`
+*   Mot de passe : `admin123`
+
+**Utilisateur**
+*   Email : `r@g.com`
+*   Mot de passe : `123456`
+
+## Limites et améliorations possibles
+
+*   Mise en place d’un système de rôles plus avancé
+*   Validation côté client (JavaScript)
+*   Notifications de réservation
+*   API REST pour une future application mobile
 
 ---
 
-## Instructions de Lancement
-
-### Prérequis
-- Vous devez disposer d'un serveur web local (XAMPP, WAMP, MAMP ou PHP built-in server).
-- PHP 7.4 ou supérieur activé.
-- MySQL comme base de données.
-
-### Installation Pas à Pas
-
-1.  **Récupérer le projet**
-    Placez les fichiers dans le répertoire racine de votre serveur (ex: `htdocs` pour XAMPP) ou dans un dossier dédié.
-
-2.  **Base de Données**
-    - Ouvrez votre gestionnaire de base de données (ex: phpMyAdmin).
-    - Créez une nouvelle base de données nommée `vehicle_reservation`.
-    - Importez le fichier `sql/setup.sql`.
-
-3.  **Configuration**
-    - Ouvrez le fichier `app/config/database.php`.
-    - Vérifiez vos identifiants (par défaut `root` sans mot de passe sur XAMPP). A mettre a jour si nécessaire :
-      ```php
-      $host = 'localhost';
-      $dbname = 'vehicle_reservation';
-      $username = 'root';
-      $password = '';
-      ```
-
-4.  **Lancement Rapide (CLI)**
-    Si vous avez PHP installé en ligne de commande, vous pouvez lancer un serveur temporaire :
-    ```bash
-    cd c:\xampp\htdocs\TDL
-    php -S localhost:8000 -t public
-    ```
-    Accédez ensuite à : `http://localhost:8000/`
-
-    *Sinon, via XAMPP : `http://localhost/TDL/public/`*
-
-### Identifiants par défaut
-- **Administrateur**
-  - Email : `admin@example.com`
-  - Mot de passe : `admin123`
-- **Utilisateur Test**
-  - Email : `r@g.com`
-  - Mot de passe : `123456`
-
-
-
-© 2026 TDL3 - By Rach_Code.
+© 2026 – TDL | Réalisé par Abdoul-Rachid BAWA (Rach_Code)
